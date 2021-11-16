@@ -50,7 +50,7 @@ def get_version():
     # - localpart   gb92bef6[-dirty]
     desc = subprocess.check_output([
         'git', 'describe', '--dirty', '--long', '--match', 'v*',
-    ])
+    ]).decode('ascii')
     match = re.match(r'^v([^-]*)-([0-9]+)-(.*)$', desc)
     assert match is not None
     verpart, revpart, localpart = match.groups()
@@ -89,7 +89,7 @@ def write_version_py(path):
         version_old = None
     version_new = '__version__ = %r\n' % (full_version,)
     if version_old != version_new:
-        print 'writing %s' % (path,)
+        print('writing %s' % (path,))
         with open(path, 'wb') as f:
             f.write(version_new)
 
@@ -99,7 +99,7 @@ def readme_contents():
         os.path.abspath(os.path.dirname(__file__)),
         'README.md')
     with open(readme_path) as readme_file:
-        return unicode(readme_file.read(), 'UTF-8')
+        return readme_file.read().encode('UTF-8')
 
 class local_build_py(build_py):
     def run(self):
